@@ -1,0 +1,9 @@
+<p>
+	ID: {{user.id}}<br/>
+	Username: {{user.username}}<br/>
+	Name: {{user.displayName}}<br/>
+	{{#each user.emails}}
+		Email: {{this.value}}<br/>
+	{{/each}}
+</p>
+<a href="/logout">Log out</a>
