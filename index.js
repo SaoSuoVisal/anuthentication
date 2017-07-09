@@ -23,14 +23,14 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser(function(user, done) {
-	done(null, user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-	db.users.findById(id, function(err, user){
-		if(err){return done(err);}
-		done(null, user);
-	});
+  db.users.findById(id, function(err, user){
+    if(err){return done(err);}
+    done(null, user);
+  });
 });
 
 var app = express();
@@ -56,7 +56,7 @@ app.use(passport.session());
       done();
       if (err){ console.error(err);}
       else { 
-      	response.render('login', {results: result.rows} ); 
+        response.render('login', {results: result.rows} ); 
       }
     });
   });
@@ -66,30 +66,33 @@ app.get('/', function(request, response) {
   response.render('home', {user: request.user});
 });
 
+app.get('/register', function(request, response){
+  response.render('register');
+});
+
+
 app.get('/login', function(request, response) {
     response.render('login');
 });
 
 app.post('/login',
-	passport.authenticate('local', 
-		{ successRedirect: '/',
-	      failureRedirect: '/login'
-		}
-	)
+  passport.authenticate('local', 
+    { successRedirect: '/',
+        failureRedirect: '/login'
+    }
+  )
 );
 
 app.get('/logout', function(request, response){
-	request.logout();
-	response.redirect('/');
+  request.logout();
+  response.redirect('/');
 });
 
 app.get('/profile', needLogin,function(request, response){
-	console.log("Email: " + request.user.email);
-	response.render('profile', {user: request.user});
+  console.log("Email: " + request.user.email);
+  response.render('profile', {user: request.user});
 });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-
